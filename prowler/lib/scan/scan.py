@@ -8,23 +8,36 @@ from prowler.providers.common.provider import Provider
 
 
 class Scan:
-
-    # Where should we call the provider? before setting Scan? within?
     _provider: Provider
     # Refactor(Core): This should replace the Audit_Metadata
-    _checks_to_execute: set[str]
-    _checks_completed: set[str] = 0
-    _services_to_execute: set[str]
-    _services_completed: set[str] = 0
+    _number_of_checks_to_execute: int = 0
+    _number_of_checks_completed: int = 0
+    _service_checks_to_execute: dict[str, set[str]]
+    _service_checks_completed: dict[str, set[str]]
     _progress: float = 0.0
 
-    # _checks_to_execute: dict[str, set[str]]
-    # _checks_completed: dict[str, set[str]]
-
-    def __init__(self, provider, checks_to_execute, services_to_execute) -> "Scan":
-        self._checks_to_execute = checks_to_execute
-        self._services_to_execute = services_to_execute
+    def __init__(self, provider, checks_to_execute):
         self._provider = provider
+
+        self._number_of_checks_to_execute = len(checks_to_execute)
+
+        service_checks_to_execute = dict()
+        service_checks_completed = dict()
+
+        for check in checks_to_execute:
+            # check -> accessanalyzer_enabled
+            # service -> accessanalyzer
+            service = check.split["_"][0]
+            if service not in service_checks_to_execute:
+                service_checks_to_execute[service] = set()
+            service_checks_to_execute[service].add(check)
+
+            # service_checks_completed this should be empty to know when a service finishes
+            if service not in service_checks_completed:
+                service_checks_completed[service] = set()
+
+        self._service_checks_to_execute = service_checks_to_execute
+        self._service_checks_completed = service_checks_completed
 
     @property
     def checks_to_execute(self):
@@ -48,7 +61,7 @@ class Scan:
 
     @property
     def progress(self):
-        return self._checks_completed / self._checks_to_execute
+        return self._number_of_checks_completed / self._number_of_checks_to_execute
 
     def scan(
         self,
@@ -86,6 +99,7 @@ class Scan:
 
                     # Update Audit Status
                     self._services_completed.add(service)
+                    #
                     self._checks_completed.add(check_name)
 
                     # This should be done just once all the service's checks are completed
