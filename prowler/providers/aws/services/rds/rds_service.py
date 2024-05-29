@@ -84,6 +84,7 @@ class RDS(AWSService):
                                         "ReadReplicaSourceDBInstanceIdentifier"
                                     ),
                                     ca_cert=instance.get("CACertificateIdentifier"),
+                                    username=instance["MasterUsername"],
                                 )
                             )
         except Exception as error:
@@ -228,6 +229,7 @@ class RDS(AWSService):
                                 parameter_group=cluster["DBClusterParameterGroup"],
                                 multi_az=cluster["MultiAZ"],
                                 region=regional_client.region,
+                                username=cluster["MasterUsername"],
                                 tags=cluster.get("TagList", []),
                             )
                             for page in describe_db_parameters_paginator.paginate(
@@ -374,6 +376,7 @@ class DBInstance(BaseModel):
     region: str
     tags: Optional[list] = []
     replica_source: Optional[str]
+    username: Optional[str]
     ca_cert: Optional[str]
     cert: list[Certificate] = []
 
@@ -395,6 +398,7 @@ class DBCluster(BaseModel):
     force_ssl: Optional[bool]
     require_secure_transport: Optional[str]
     region: str
+    username: Optional[str]
     tags: Optional[list] = []
 
 

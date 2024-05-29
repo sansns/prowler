@@ -84,6 +84,7 @@ class Test_RDS_Service:
             StorageEncrypted=True,
             DeletionProtection=True,
             PubliclyAccessible=True,
+            MasterUsername="postgres",
             AutoMinorVersionUpgrade=True,
             BackupRetentionPeriod=10,
             EnableCloudwatchLogsExports=["audit", "error"],
@@ -106,6 +107,7 @@ class Test_RDS_Service:
         )
         assert rds.db_instances[0].status == "available"
         assert rds.db_instances[0].public
+        assert rds.db_instances[0].username == "postgres"
         assert rds.db_instances[0].encrypted
         assert rds.db_instances[0].backup_retention_period == 10
         assert rds.db_instances[0].cloudwatch_logs == ["audit", "error"]
