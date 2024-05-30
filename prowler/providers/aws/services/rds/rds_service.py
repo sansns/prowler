@@ -71,6 +71,9 @@ class RDS(AWSService):
                                         for item in instance["DBParameterGroups"]
                                     ],
                                     multi_az=instance["MultiAZ"],
+                                    iam_auth=instance[
+                                        "IAMDatabaseAuthenticationEnabled"
+                                    ],
                                     security_groups=[
                                         sg["VpcSecurityGroupId"]
                                         for sg in instance["VpcSecurityGroups"]
@@ -227,6 +230,7 @@ class RDS(AWSService):
                                 deletion_protection=cluster["DeletionProtection"],
                                 parameter_group=cluster["DBClusterParameterGroup"],
                                 multi_az=cluster["MultiAZ"],
+                                iam_auth=cluster["IAMDatabaseAuthenticationEnabled"],
                                 region=regional_client.region,
                                 tags=cluster.get("TagList", []),
                             )
@@ -366,6 +370,7 @@ class DBInstance(BaseModel):
     auto_minor_version_upgrade: bool
     enhanced_monitoring_arn: Optional[str]
     multi_az: bool
+    iam_auth: Optional[bool]
     parameter_groups: list[str] = []
     parameters: list[dict] = []
     security_groups: list[str] = []
@@ -391,6 +396,7 @@ class DBCluster(BaseModel):
     deletion_protection: bool
     auto_minor_version_upgrade: bool
     multi_az: bool
+    iam_auth: Optional[bool]
     parameter_group: str
     force_ssl: Optional[bool]
     require_secure_transport: Optional[str]
