@@ -13,10 +13,10 @@
   "RelatedUrl": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Enabling.html",
   "Remediation": {
     "Code": {
-      "CLI": "aws rds modify-db-instance --region us-east-1 --db-instance-identifier test-database --enable-iam-database-authentication --apply-immediately",
-      "NativeIaC": "",
-      "Other": "https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/RDS/iam-database-authentication.html#",
-      "Terraform": ""
+      "CLI": "https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/RDS/iam-database-authentication.html#",
+      "NativeIaC": "https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/RDS/iam-database-authentication.html#",
+      "Other": "",
+      "Terraform": "https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/RDS/iam-database-authentication.html#"
     },
     "Recommendation": {
       "Text": "Enable IAM authentication for supported RDS instances/clusters.",
