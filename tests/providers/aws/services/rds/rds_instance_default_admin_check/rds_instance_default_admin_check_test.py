@@ -29,7 +29,7 @@ def mock_make_api_call(self, operation_name, kwarg):
 
 
 @mock.patch("botocore.client.BaseClient._make_api_call", new=mock_make_api_call)
-class Test_rds_instance_master_username:
+class Test_rds_instance_default_admin_check:
     @mock_aws
     def test_rds_no_instances(self):
         from prowler.providers.aws.services.rds.rds_service import RDS
@@ -41,15 +41,15 @@ class Test_rds_instance_master_username:
             return_value=aws_provider,
         ):
             with mock.patch(
-                "prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username.rds_client",
+                "prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check.rds_client",
                 new=RDS(aws_provider),
             ):
                 # Test Check
-                from prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username import (
-                    rds_instance_master_username,
+                from prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check import (
+                    rds_instance_default_admin_check,
                 )
 
-                check = rds_instance_master_username()
+                check = rds_instance_default_admin_check()
                 result = check.execute()
 
                 assert len(result) == 0
@@ -80,15 +80,15 @@ class Test_rds_instance_master_username:
             return_value=aws_provider,
         ):
             with mock.patch(
-                "prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username.rds_client",
+                "prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check.rds_client",
                 new=RDS(aws_provider),
             ):
                 # Test Check
-                from prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username import (
-                    rds_instance_master_username,
+                from prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check import (
+                    rds_instance_default_admin_check,
                 )
 
-                check = rds_instance_master_username()
+                check = rds_instance_default_admin_check()
                 result = check.execute()
 
                 assert len(result) == 1
@@ -131,15 +131,15 @@ class Test_rds_instance_master_username:
             return_value=aws_provider,
         ):
             with mock.patch(
-                "prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username.rds_client",
+                "prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check.rds_client",
                 new=RDS(aws_provider),
             ):
                 # Test Check
-                from prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username import (
-                    rds_instance_master_username,
+                from prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check import (
+                    rds_instance_default_admin_check,
                 )
 
-                check = rds_instance_master_username()
+                check = rds_instance_default_admin_check()
                 result = check.execute()
 
                 assert len(result) == 1
@@ -185,15 +185,15 @@ class Test_rds_instance_master_username:
             return_value=aws_provider,
         ):
             with mock.patch(
-                "prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username.rds_client",
+                "prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check.rds_client",
                 new=RDS(aws_provider),
             ):
                 # Test Check
-                from prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username import (
-                    rds_instance_master_username,
+                from prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check import (
+                    rds_instance_default_admin_check,
                 )
 
-                check = rds_instance_master_username()
+                check = rds_instance_default_admin_check()
                 result = check.execute()
 
                 assert len(result) == 1
@@ -238,15 +238,15 @@ class Test_rds_instance_master_username:
             return_value=aws_provider,
         ):
             with mock.patch(
-                "prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username.rds_client",
+                "prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check.rds_client",
                 new=RDS(aws_provider),
             ):
                 # Test Check
-                from prowler.providers.aws.services.rds.rds_instance_master_username.rds_instance_master_username import (
-                    rds_instance_master_username,
+                from prowler.providers.aws.services.rds.rds_instance_default_admin_check.rds_instance_default_admin_check import (
+                    rds_instance_default_admin_check,
                 )
 
-                check = rds_instance_master_username()
+                check = rds_instance_default_admin_check()
                 result = check.execute()
 
                 assert len(result) == 1
