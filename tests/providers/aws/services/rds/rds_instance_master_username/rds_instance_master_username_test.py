@@ -211,7 +211,7 @@ class Test_rds_instance_master_username:
                 assert result[0].resource_tags == []
 
     @mock_aws
-    def test_rds_aurora_mysql_clustered_instance_ssl(self):
+    def test_rds_clustered_without_default_username(self):
         conn = client("rds", region_name=AWS_REGION_US_EAST_1)
         conn.create_db_parameter_group(
             DBParameterGroupName="test",
