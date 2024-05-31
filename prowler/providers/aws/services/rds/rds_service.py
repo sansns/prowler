@@ -221,6 +221,7 @@ class RDS(AWSService):
                                 backup_retention_period=cluster.get(
                                     "BackupRetentionPeriod"
                                 ),
+                                backtrack=cluster.get("BacktrackWindow"),
                                 cloudwatch_logs=cluster.get(
                                     "EnabledCloudwatchLogsExports"
                                 ),
@@ -387,6 +388,7 @@ class DBCluster(BaseModel):
     public: bool
     encrypted: bool
     backup_retention_period: int = 0
+    backtrack: int = 0
     cloudwatch_logs: Optional[list]
     deletion_protection: bool
     auto_minor_version_upgrade: bool
