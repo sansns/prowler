@@ -221,7 +221,7 @@ class RDS(AWSService):
                                 backup_retention_period=cluster.get(
                                     "BackupRetentionPeriod"
                                 ),
-                                backtrack=cluster.get("BacktrackWindow"),
+                                backtrack=cluster.get("BacktrackWindow", 0),
                                 cloudwatch_logs=cluster.get(
                                     "EnabledCloudwatchLogsExports"
                                 ),
