@@ -35,6 +35,7 @@ class AWSService:
     def __init__(self, service: str, provider: AwsProvider, global_service=False):
         # Audit Information
         # Do we need to store the whole provider?
+        use_threads = False
         self.provider = provider
         self.audited_account = provider.identity.account
         self.audited_account_arn = provider.identity.account_arn
@@ -64,8 +65,12 @@ class AWSService:
         self.region = provider.get_default_region(self.service)
         self.client = self.session.client(self.service, self.region)
 
-        # Thread pool for __threading_call__
-        self.thread_pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+        # Thread pool for __threading_call__, conditionally created
+        self.use_threads = use_threads
+        if self.use_threads:
+            self.thread_pool = ThreadPoolExecutor(max_workers=MAX_WORKERS)
+        else:
+            self.thread_pool = None  # No thread pool if use_threads is False
 
     def __get_session__(self):
         return self.session
@@ -91,13 +96,18 @@ class AWSService:
                 f"{self.service.upper()} - Starting threads for '{call_name}' function to process {item_count} items..."
             )
 
-        # Submit tasks to the thread pool
-        futures = [self.thread_pool.submit(call, item) for item in items]
-
-        # Wait for all tasks to complete
-        for future in as_completed(futures):
-            try:
-                future.result()  # Raises exceptions from the thread, if any
-            except Exception:
-                # Handle exceptions if necessary
-                pass  # Replace 'pass' with any additional exception handling logic. Currently handled within the called function
+        if self.use_threads and self.thread_pool:
+            # Submit tasks to the thread pool if threads are enabled
+            futures = [self.thread_pool.submit(call, item) for item in items]
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception:
+                    pass
+        else:
+            # Execute sequentially if threads are disabled
+            for item in items:
+                try:
+                    call(item)
+                except Exception:
+                    pass
