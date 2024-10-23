@@ -61,6 +61,9 @@ class DirectConnect(AWSService):
                     )
                 ):
                     vif_id = vif.get("virtualInterfaceId")
+                    vgw_id = vif.get("virtualGatewayId")
+                    connection_id = vif.get("connectionId")
+                    dxgw_id = vif.get("directConnectGatewayId")
                     self.vifs[vif_id] = VirtualInterface(
                         id=vif_id,
                         name=vif["virtualInterfaceName"],
@@ -70,35 +73,28 @@ class DirectConnect(AWSService):
                         location=vif["location"],
                         region=regional_client.region,
                     )
-                    if vif[vif_id].vgw_gateway_id != "":
-                        if vif[vif_id] in self.vgws:
-                            self.vgws[vif["virtualGatewayId"]]["vifs"].append(
-                                vif["virtualInterfaceId"]
-                            )
-                            self.vgws[vif["virtualGatewayId"]]["connections"].append(
-                                vif["connectionId"]
-                            )
+                    if vgw_id != "":
+                        if vgw_id in self.vgws:
+                            self.vgws[vgw_id].vifs.append(vif["virtualInterfaceId"])
+                            self.vgws[vgw_id].connections.append(vif["connectionId"])
                         else:
-                            self.vgws[vif["virtualGatewayId"]] = VirtualGateway(
-                                id=[vif["virtualGatewayId"]],
-                                vifs=[vif["virtualInterfaceId"]],
-                                connections=[vif["connectionId"]],
-                                region=[vif["region"]],
+                            self.vgws[vgw_id] = VirtualGateway(
+                                id=vgw_id,
+                                vifs=[vif_id],
+                                connections=[connection_id],
+                                region=regional_client.region,
                             )
-                    if vif[vif_id].dx_gateway_id != "":
-                        if vif[vif_id] in self.dxgws:
-                            self.dxgws[vif["directConnectGatewayId"]]["vifs"].append(
-                                vif["virtualInterfaceId"]
-                            )
-                            self.dxgws[vif["directConnectGatewayId"]][
-                                "connections"
-                            ].append(vif["connectionId"])
+
+                    if dxgw_id != "":
+                        if dxgw_id in self.dxgws:
+                            self.dxgws[dxgw_id].vifs.append(vif["virtualInterfaceId"])
+                            self.dxgws[dxgw_id].connections.append(vif["connectionId"])
                         else:
-                            self.dxgws[vif["directConnectGatewayId"]] = DXGateway(
-                                id=[vif["directConnectGatewayId"]],
-                                vifs=[vif["virtualInterfaceId"]],
-                                connections=[vif["connectionId"]],
-                                region=[vif["region"]],
+                            self.dxgws[dxgw_id] = DXGateway(
+                                id=dxgw_id,
+                                vifs=[vif_id],
+                                connections=[connection_id],
+                                region=regional_client.region,
                             )
         except ClientError as error:
             if error.response["Error"]["Code"] == "ResourceNotFoundException":
