@@ -9,7 +9,7 @@ AWS_REGION = "eu-west-1"
 AWS_ACCOUNT_NUMBER = "123456789012"
 
 
-class Test_virtual_interface_redundancy_exists:
+class Test_directconnect_virtual_interface_redundancy:
     def test_no_vif(self):
         dx_client = mock.MagicMock
         dx_client.vgws = {}
