@@ -18,6 +18,7 @@ class directconnect_connection_redundancy(Check):
         if no_of_connections > 0:
             report = Check_Report_AWS(self.metadata())
             report.region = region
+            # Direct Connect Connections do not have ARNs.
             report.resource_arn = "Direct Connect Connection(s)"
             report.resource_id = "Direct Connect Connection(s)"
             if no_of_connections == 1:
